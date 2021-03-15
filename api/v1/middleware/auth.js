@@ -1,6 +1,9 @@
 const expressJwt = require('express-jwt');
 const { secret, optional, unless } = require('../config');
 
+const { model } = require('mongoose');
+const User = model('User');
+
 function getTokenFromRequest(req) {
     if (req.body && req.body.refresh_token) {
         return req.body.refresh_token
@@ -17,7 +20,7 @@ const auth = function (req, res, next) {
         isOptional = true
     }
 
-    return expressJwt({
+    const jwt = expressJwt({
         secret: secret,
         userProperty: 'payload',
         algorithms: ['HS256'],
@@ -26,7 +29,24 @@ const auth = function (req, res, next) {
     }).unless({
         path: unless,
         useOriginalUrl: false
-    })(req, res, next);
+    });
+
+    return jwt(req, res, async function (err) {
+        if (err) {
+            return next(err);
+        }
+        if (req.payload && req.payload.id) {
+            try {
+                const user = await User.findById(req.payload.id).exec()
+                if (!user) { throw new Error('user id not found'); }
+                req.user = user
+                return next()
+            } catch (err) {
+                return next(err);
+            };
+        }
+        return next();
+    });
 }
 
 module.exports = auth;
