@@ -43,7 +43,7 @@ schema.set('toJSON', {
         delete ret.__v;
         delete ret.salt;
         delete ret.hash;
-        ret.avatar = 'data:' + ret.avatar.contentType + ';base64,' + Buffer.from(ret.avatar.data).toString('base64')
+        if (ret.avatar && ret.avatar.contentType && ret.avatar.data) ret.avatar = 'data:' + ret.avatar.contentType + ';base64,' + Buffer.from(ret.avatar.data).toString('base64')
         return ret;
     }
 });
