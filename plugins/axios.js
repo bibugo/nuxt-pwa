@@ -4,10 +4,12 @@ export default function ({ $message, $axios, redirect, error: nuxtError }) {
     // })
 
     $axios.onError(error => {
-        const code = parseInt(error.response && error.response.status)
-        let message = (error.response && error.response.data && error.response.data.errors && error.response.data.errors.message)
-        message = message ? message : error.response && error.response.statusText
-        $message({ content: message + ' (' + code + ')', color: 'error' });
+        const status = parseInt(error.response && error.response.status)
+        const errors = error.response && error.response.data && error.response.data.errors
+        let message = '[' + status + '] '
+        message += (errors && errors.message) ? errors.message : error.response.statusText
+        if(errors && errors.code) message += ' (' + errors.code + ')'
+        $message({ content: message, color: 'error' });
         return Promise.resolve(false);
         //     if (code === 400) {
         //         redirect('/400')

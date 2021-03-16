@@ -19,8 +19,8 @@ router.post('/auth/login', async function (req, res, next) {
         );
         const { token, refreshToken } = user.generateJWT()
         return res.status(200).json({ token, refreshToken });
-    } catch (e) {
-        res.status(401).send();
+    } catch (err) {
+        next(err)
     }
 });
 
@@ -38,11 +38,7 @@ router.patch('/user', async function (req, res, next) {
     const allowedUpdates = ['phone', 'email', 'password'];
 
     if (req.body['password'] && req.body['password'] !== req.body['passwordconfirm']) {
-        return res.status(400).send({
-            errors: {
-                message: 'password not confirm!'
-            }
-        });
+        return res.jsonError('password not confirm!', 422)
     }
 
     try {
@@ -53,8 +49,8 @@ router.patch('/user', async function (req, res, next) {
         });
         await req.user.save();
         res.json({ user: req.user.toJSON() });
-    } catch (e) {
-        res.status(400).send(e);
+    } catch (err) {
+        next(err);
     }
 });
 

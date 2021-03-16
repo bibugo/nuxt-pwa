@@ -12,16 +12,8 @@ router.get('/inspire', (req, res) => {
 
 router.use(function (err, req, res, next) {
   if (err.name === 'UnauthorizedError') {
-    return res.status(401).json({
-      errors: {
-        message: 'invalid token...',
-      }
-    });
+    return res.jsonError('invalid token', 401, err.code)
   }
-  return next(err);
-});
-
-router.use(function (err, req, res, next) {
   if (err.name === 'ValidationError') {
     return res.status(422).json({
       errors: Object.keys(err.errors).reduce(function (errors, key) {
@@ -31,11 +23,8 @@ router.use(function (err, req, res, next) {
     });
   }
   if (err.code && err.code == 11000) {
-    return res.status(422).json({
-      errors: {
-        message: 'duplicate key ' + Object.keys(err.keyValue)[0],
-      }
-    });
+    const key = Object.keys(err.keyValue)[0]
+    return res.jsonError('duplicate key ', 422, key + ' = ' + err.keyValue[key])
   }
   return next(err);
 });

@@ -8,6 +8,7 @@ app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: 
 
 require('./db');
 
+app.use(require('./middleware/res'));
 app.use(require('./middleware/auth'));
 
 app.use(require('./routes'));
@@ -20,11 +21,11 @@ app.use(function (req, res, next) {
 
 app.use(function (err, req, res, next) {
   console.log(err.stack);  //debug
-
   res.status(err.status || 500);
   res.json({
     errors: {
       message: err.message,
+      code: err.code,
       error: err  //debug
     }
   });
