@@ -4,7 +4,6 @@ const router = Router();
 router.use('/', require('./user'));
 
 router.get('/inspire', (req, res) => {
-  console.log(req.payload)
   res.json({
     words: 'First, solve the problem. Then, write the code.',
     author: 'John Johnson'
@@ -13,7 +12,11 @@ router.get('/inspire', (req, res) => {
 
 router.use(function (err, req, res, next) {
   if (err.name === 'UnauthorizedError') {
-    res.status(401).send('invalid token...');
+    return res.status(401).json({
+      errors: {
+        message: 'invalid token...',
+      }
+    });
   }
   return next(err);
 });
@@ -25,6 +28,13 @@ router.use(function (err, req, res, next) {
         errors[key] = err.errors[key].message;
         return errors;
       }, {})
+    });
+  }
+  if (err.code && err.code == 11000) {
+    return res.status(422).json({
+      errors: {
+        message: 'duplicate key ' + Object.keys(err.keyValue)[0],
+      }
     });
   }
   return next(err);

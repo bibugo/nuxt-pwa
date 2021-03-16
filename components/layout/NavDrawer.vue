@@ -95,9 +95,12 @@ export default {
       },
       {
         action: "mdi-run",
-        title: "Family",
+        title: "User",
         active: true,
-        children: [{ title: "Inspire", to: "/inspire" }],
+        children: [
+          { title: "New", to: "/user/new" },
+          { title: "Inspire", to: "/inspire" },
+        ],
       },
     ],
     xxx: "mdi-close",

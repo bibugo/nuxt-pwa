@@ -1,5 +1,5 @@
 export default ({ app, store }, inject) => {
-    inject('message', function ({ content = '', color = '' }) {
+    inject('message', function ({ content = '', color = 'success' }) {
         $nuxt.$emit('show-snackbar', { content, color })
     });
 

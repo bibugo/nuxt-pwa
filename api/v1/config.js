@@ -2,6 +2,7 @@ module.exports = {
     secret: process.env.NODE_ENV === 'production' ? process.env.SECRET : 'secret',
     unless: [
         '/auth/login',
+        '/auth/passwordreset',
     ],
     optional: [
         '/inspire',

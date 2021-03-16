@@ -1,4 +1,4 @@
-const expressJwt = require('express-jwt');
+const { UnauthorizedError } = expressJwt = require('express-jwt');
 const { secret, optional, unless } = require('../config');
 
 const { model } = require('mongoose');
@@ -35,14 +35,14 @@ const auth = function (req, res, next) {
         if (err) {
             return next(err);
         }
-        if (req.payload && req.payload.id) {
+        if (req.payload) {
             try {
                 const user = await User.findById(req.payload.id).exec()
-                if (!user) { throw new Error('user id not found'); }
+                if (!user) { return next(new UnauthorizedError('invalid_id', { message: 'User not exist' })); }
                 req.user = user
                 return next()
             } catch (err) {
-                return next(err);
+                return next(new UnauthorizedError('invalid_id', err));
             };
         }
         return next();

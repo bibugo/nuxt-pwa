@@ -107,7 +107,7 @@
                 />
                 <v-btn
                   v-if="!avatar_saved"
-                  dense
+                  small
                   rounded
                   elevation="0"
                   color="blue-grey"
@@ -122,15 +122,25 @@
                 <v-divider vertical></v-divider>
               </v-col>
               <v-col class="py-0">
-                <v-text-field dense label="电话号码"></v-text-field>
-                <v-text-field dense label="电子邮箱"></v-text-field>
+                <v-text-field
+                  v-model="userData.phone"
+                  dense
+                  label="电话号码"
+                ></v-text-field>
+                <v-text-field
+                  v-model="userData.email"
+                  dense
+                  label="电子邮箱"
+                ></v-text-field>
                 <v-subheader class="px-0">修改密码</v-subheader>
                 <v-text-field
+                  v-model="userData.password"
                   dense
                   label="新密码"
                   type="password"
                 ></v-text-field>
                 <v-text-field
+                  v-model="userData.passwordconfirm"
                   dense
                   label="确认密码"
                   type="password"
@@ -142,11 +152,9 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="saveProfile"> 保存 </v-btn>
           <v-btn color="blue darken-1" text @click="user_profile = false">
             关闭
-          </v-btn>
-          <v-btn color="blue darken-1" text @click="user_profile = false">
-            保存
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -160,11 +168,21 @@ export default {
   data: () => ({
     user_menu: false,
     user_profile: false,
-    avatar_url: '',
+    avatar_url: "",
     max_size: 1024,
     avatar_saved: true,
     formData: null,
+    userData: {
+      phone: "",
+      email: "",
+      password: "",
+      passwordconfirm: "",
+    },
   }),
+  mounted() {
+    this.userData.phone = this.$auth.user.phone;
+    this.userData.email = this.$auth.user.email;
+  },
   computed: {
     do_not_disturb: {
       get: function () {
@@ -231,12 +249,12 @@ export default {
       if (file.length > 0) {
         let size = imageFile.size / max_size / max_size;
         if (!imageFile.type.match("image.*")) {
-          this.$g.message({
+          this.$message({
             content: "Please choose an image file",
             color: "error",
           });
         } else if (size > 1) {
-          this.$g.message({
+          this.$message({
             content: "Your file is too big! Please select an image under 1MB",
             color: "error",
           });
@@ -257,6 +275,15 @@ export default {
       });
       this.avatar_saved = true;
       this.$auth.user.avatar = avatar["data"];
+    },
+    async saveProfile() {
+      const user = await this.$axios.patch("/api/user", this.userData);
+      if (!user) return;
+      this.$auth.setUser(user);
+      this.$message({
+        content: "save!",
+        color: "success",
+      });
     },
     logout() {
       this.$confirm("确定要退出系统吗?").then(async (result) => {
