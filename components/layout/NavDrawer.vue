@@ -1,5 +1,5 @@
 <template>
-  <v-container pa-0 full-height>
+  <v-container pa-0 style="height: 100vh">
     <v-toolbar dark dense flat src="/images/vbanner.jpg">
       <v-btn icon @click.stop="propMiniVariant = !propMiniVariant">
         <v-icon

@@ -1,5 +1,4 @@
 <template>
-  <v-container>
     <v-row>
       <v-col class="text-center">
         <blockquote class="blockquote">
@@ -12,7 +11,6 @@
         </blockquote>
       </v-col>
     </v-row>
-  </v-container>
 </template>
 
 <script>

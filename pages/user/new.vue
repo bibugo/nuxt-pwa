@@ -1,6 +1,6 @@
 <template>
-  <v-container>
-    <v-form ref="form" v-model="valid" @submit.prevent="submit">
+  <v-layout column>
+    <v-form ref="form" v-model="valid" @submit.prevent="submit" class="px-10">
       <v-text-field
         v-model="data.username"
         :counter="10"
@@ -41,7 +41,7 @@
         <v-icon>mdi-restore</v-icon>
       </v-btn>
     </v-form>
-  </v-container>
+  </v-layout>
 </template>
 
 <script>

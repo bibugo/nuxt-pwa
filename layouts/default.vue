@@ -49,13 +49,15 @@
       </template>
     </v-app-bar>
 
-    <v-main>
-      <nuxt />
+    <v-main style="height: 100vh">
+      <v-container fluid fill-height align-start style="overflow-y: auto">
+        <nuxt />
+      </v-container>
     </v-main>
 
     <layout-task-drawer v-model="task" />
 
-    <v-footer :absolute="!fixed" app>
+    <v-footer v-if="fixed" :absolute="!fixed" app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
 
@@ -86,6 +88,14 @@ export default {
       { type: "error", message: `I'm an error alert.` },
     ],
   }),
+  mounted() {
+    const elHtml = document.getElementsByTagName("html")[0];
+    elHtml.style.overflowY = "hidden";
+  },
+  destroyed() {
+    const elHtml = document.getElementsByTagName("html")[0];
+    elHtml.style.overflowY = null;
+  },
 };
 </script>
 
