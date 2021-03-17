@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 const { randomBytes, pbkdf2Sync } = require('crypto');
 const { sign } = require('jsonwebtoken');
-const { secret, AuthError } = require('../config');
+const { secret, ClientError } = require('../config');
 
 const schema = new Schema({
     username: { type: String, lowercase: true, unique: true, required: [true, "can't be blank"], match: [/^[a-zA-Z0-9]+$/, 'is invalid'], index: true },
@@ -16,11 +16,11 @@ const schema = new Schema({
 schema.statics.findByCredentials = async (username, password) => {
     const user = await User.findOne({ username });
     if (!user) {
-        throw new AuthError('Unable to login');
+        throw new ClientError(401, 'Unable to login');
     }
     const hash = pbkdf2Sync(password, user.salt, 10000, 512, 'sha512').toString('hex');
     if (user.password !== hash) {
-        throw new AuthError('Unable to login');
+        throw new ClientError(401, 'Unable to login');
     }
     return user;
 }

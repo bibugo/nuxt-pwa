@@ -11,16 +11,16 @@ const config = {
 }
 
 // global functions
-const AuthError = function (message, code, status, error) {
-    this.name = "AuthError";
+const ClientError = function (status, message, code, error) {
+    this.name = "ClientError";
+    this.status = status || 401;
     this.message = message;
     Error.call(this, message);
     Error.captureStackTrace(this, this.constructor);
-    this.code = code || '';
-    this.status = status || 401;
-    this.inner = error || { message: message, code: code };
+    if (!!code) this.code = code;
+    this.inner = error || { message: this.message, code: this.code };
 }
-AuthError.prototype = Object.create(Error.prototype);
-AuthError.prototype.constructor = AuthError;
+ClientError.prototype = Object.create(Error.prototype);
+ClientError.prototype.constructor = ClientError;
 
-module.exports = { ...config, AuthError };
+module.exports = { ...config, ClientError };

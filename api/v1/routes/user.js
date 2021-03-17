@@ -1,6 +1,7 @@
 const { model } = require('mongoose');
 const { Router } = require('express');
 const router = Router();
+const { ClientError } = require('../config');
 
 const fs = require('fs');
 const multer = require('multer');
@@ -38,7 +39,7 @@ router.patch('/user', async function (req, res, next) {
     const allowedUpdates = ['phone', 'email', 'password'];
 
     if (req.body['password'] && req.body['password'] !== req.body['passwordconfirm']) {
-        return res.jsonError('password not confirm!', 422)
+        return next(new ClientError(422, 'password not confirm!'))
     }
 
     try {
