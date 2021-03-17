@@ -21,11 +21,11 @@
       <v-list-item-group color="primary">
         <template v-for="(item, i) in items">
           <v-list-item
+            exact
             v-if="!item.children || item.children.length < 1"
             :key="i"
             :to="item.to"
             router
-            exact
           >
             <v-list-item-icon>
               <v-icon v-text="item.action"></v-icon>
@@ -48,6 +48,7 @@
               </v-list-item-content>
             </template>
             <v-list-item
+              exact
               v-for="(sub, j) in item.children"
               :to="sub.to"
               :key="j"
@@ -98,6 +99,7 @@ export default {
         title: "User",
         active: true,
         children: [
+          { title: "User", to: "/user" },
           { title: "New", to: "/user/new" },
           { title: "Inspire", to: "/inspire" },
         ],

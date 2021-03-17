@@ -171,7 +171,7 @@ export default {
     avatar_url: "",
     max_size: 1024,
     avatar_saved: true,
-    formData: null,
+    avatarData: null,
     userData: {
       phone: "",
       email: "",
@@ -247,7 +247,7 @@ export default {
       const { max_size } = this;
       let imageFile = file[0];
       if (file.length > 0) {
-        let size = imageFile.size / max_size / max_size;
+        let size = imageFile.size / max_size / 1024;
         if (!imageFile.type.match("image.*")) {
           this.$message({
             content: "Please choose an image file",
@@ -259,19 +259,24 @@ export default {
             color: "error",
           });
         } else {
-          this.formData = new FormData();
+          this.avatarData = new FormData();
           let imageURL = URL.createObjectURL(imageFile);
           this.avatar_url = imageURL;
-          this.formData.append(fieldName, imageFile);
+          this.avatarData.append(fieldName, imageFile);
           this.avatar_saved = false;
         }
       }
     },
     async saveAvatar() {
-      const avatar = await this.$axios.post("/api/user/avatar", this.formData, {
+      const avatar = await this.$axios.post("/api/user/avatar", this.avatarData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
+      });
+      if (!avatar) return;
+      this.$message({
+        content: "avatar uploaded!",
+        color: "success",
       });
       this.avatar_saved = true;
       this.$auth.user.avatar = avatar["data"];

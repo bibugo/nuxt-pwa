@@ -42,7 +42,7 @@ const auth = function (req, res, next) {
                 req.user = user
                 return next()
             } catch (err) {
-                return next(new UnauthorizedError('invalid_id', err));
+                return next(new UnauthorizedError('query_error', err));
             };
         }
         return next();

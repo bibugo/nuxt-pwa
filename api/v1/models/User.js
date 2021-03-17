@@ -4,7 +4,14 @@ const { sign } = require('jsonwebtoken');
 const { secret, ClientError } = require('../config');
 
 const schema = new Schema({
-    username: { type: String, lowercase: true, unique: true, required: [true, "can't be blank"], match: [/^[a-zA-Z0-9]+$/, 'is invalid'], index: true },
+    username: {
+        type: String,
+        lowercase: true,
+        unique: "username is duplicate",
+        required: [true, "username can't be blank"],
+        match: [/^[a-zA-Z0-9]+$/, 'username is invalid'],
+        index: true
+    },
     password: String,
     salt: String,
     email: String,
@@ -12,6 +19,7 @@ const schema = new Schema({
     fullname: String,
     avatar: { data: Buffer, contentType: String },
 }, { timestamps: true });
+schema.plugin(require('mongoose-beautiful-unique-validation'));
 
 schema.statics.findByCredentials = async (username, password) => {
     const user = await User.findOne({ username });
@@ -41,6 +49,13 @@ schema.methods.randomToken = function (length) {
     return randomBytes(length ? length : 32).toString("hex")
 }
 
+schema.methods.avatarBase64 = function () {
+    if (this.avatar && this.avatar.contentType && this.avatar.data) {
+        return 'data:' + this.avatar.contentType + ';base64,' + Buffer.from(this.avatar.data).toString('base64')
+    }
+    return this.avatar
+}
+
 schema.pre('save', async function (next) {
     const user = this;
     if (user.isModified('password')) {
@@ -59,7 +74,7 @@ schema.set('toJSON', {
         delete ret.__v;
         delete ret.salt;
         delete ret.password;
-        if (ret.avatar && ret.avatar.contentType && ret.avatar.data) ret.avatar = 'data:' + ret.avatar.contentType + ';base64,' + Buffer.from(ret.avatar.data).toString('base64')
+        ret.avatar = doc.avatarBase64()
         return ret;
     }
 });

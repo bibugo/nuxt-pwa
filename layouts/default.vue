@@ -31,8 +31,6 @@
         :preferences.sync="preferences"
       />
 
-      
-
       <v-badge
         class="custom-badge"
         :content="messages"
@@ -42,8 +40,8 @@
         offset-y="20"
       >
         <v-btn icon @click.stop="task = true">
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
+          <v-icon>mdi-dots-vertical</v-icon>
+        </v-btn>
       </v-badge>
 
       <template v-slot:extension>
@@ -52,9 +50,7 @@
     </v-app-bar>
 
     <v-main>
-      <v-container>
-        <nuxt />
-      </v-container>
+      <nuxt />
     </v-main>
 
     <layout-task-drawer v-model="task" />

@@ -13,11 +13,11 @@ const config = {
 // global functions
 const ClientError = function (status, message, code, error) {
     this.name = "ClientError";
-    this.status = status || 401;
-    this.message = message;
+    this.status = status || 400;
+    this.message = message || 'Bad Request';
     Error.call(this, message);
     Error.captureStackTrace(this, this.constructor);
-    if (!!code) this.code = code;
+    if (code) this.code = code;
     this.inner = error || { message: this.message, code: this.code };
 }
 ClientError.prototype = Object.create(Error.prototype);

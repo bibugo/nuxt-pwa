@@ -10,8 +10,8 @@ const upload = multer({ dest: './tmp/' })
 const User = model('User');
 
 router.post('/auth/login', async function (req, res, next) {
-    if (!req.body.username) return res.status(422).json({ errors: { username: "can't be blank" } });
-    if (!req.body.password) return res.status(422).json({ errors: { password: "can't be blank" } });
+    if (!req.body.username) return next(new ClientError(422, "username can't be blank"));
+    if (!req.body.password) return next(new ClientError(422, "password can't be blank"));
 
     try {
         const user = await User.findByCredentials(
@@ -26,7 +26,7 @@ router.post('/auth/login', async function (req, res, next) {
 });
 
 router.post('/auth/refresh', function (req, res, next) {
-    if (req.payload.type !== 'refresh') return res.status(422).json({ errors: { refresh_token: "isn't a refresh token" } });
+    if (req.payload.type !== 'refresh') return next(new ClientError(422, "refresh token not exist"));
     res.status(200).json(req.user.generateJWT());
 });
 
@@ -49,7 +49,7 @@ router.patch('/user', async function (req, res, next) {
             }
         });
         await req.user.save();
-        res.json({ user: req.user.toJSON() });
+        return res.json({ user: req.user.toJSON() });
     } catch (err) {
         next(err);
     }
@@ -64,15 +64,19 @@ router.post('/user/new', function (req, res, next) {
 
 router.post('/user/avatar', upload.single('avatar_file'), function (req, res, next) {
     const user = req.user
-    user.avatar.data = fs.readFileSync(req.file.path)
-    user.avatar.contentType = req.file.mimetype;
-    user.save();
-    fs.unlink(req.file.path, () => void 0)
-    return res.json('data:' + user.avatar.contentType + ';base64,' + user.avatar.data.toString('base64'));
+    try {
+        user.avatar.data = fs.readFileSync(req.file.path)
+        user.avatar.contentType = req.file.mimetype;
+        user.save();
+        fs.unlink(req.file.path, () => void 0)
+        return res.json(user.avatarBase64());
+    } catch (err) {
+        next(err)
+    }
 });
 
 router.get('/user/avatar', function (req, res, next) {
-    res.send('data:' + req.user.avatar.contentType + ';base64,' + req.user.avatar.data.toString('base64'))
+    res.send(req.user.avatarBase64())
 });
 
 module.exports = router;
