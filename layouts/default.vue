@@ -90,7 +90,3 @@ export default {
   }),
 };
 </script>
-
-<style scoped>
-html { overflow-y: hidden; border: violet; }
-</style>
