@@ -11,12 +11,13 @@
           </p>
         </div>
       </v-col>
-      <v-col
-        class="login col-12 col-lg-4 d-flex flex-column justify-center align-center justify-space-between"
-      >
-        <div></div>
-        <layout-login-card outlined width="360px" />
-        <div>Copyright 2021</div>
+      <v-col class="login col-12 col-lg-4 d-flex flex-column">
+        <v-spacer />
+        <layout-login-card outlined width="360px" class="mx-auto" />
+        <v-spacer />
+        <div class="text-center" style="width: 100%">
+          2021 — <strong>Geefire</strong>
+        </div>
       </v-col>
     </v-row>
   </v-container>
