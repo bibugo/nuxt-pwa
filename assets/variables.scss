@@ -3,6 +3,10 @@
 // The variables you want to modify
 // $font-size-root: 20px;
 
+html {
+    overflow-y: hidden;
+}
+
 $badge-font-size: 9px;
 $badge-padding: 2px 3px;
 $badge-height: 16px;

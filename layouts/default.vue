@@ -88,16 +88,9 @@ export default {
       { type: "error", message: `I'm an error alert.` },
     ],
   }),
-  mounted() {
-    const elHtml = document.getElementsByTagName("html")[0];
-    elHtml.style.overflowY = "hidden";
-  },
-  destroyed() {
-    const elHtml = document.getElementsByTagName("html")[0];
-    elHtml.style.overflowY = null;
-  },
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+html { overflow-y: hidden; border: violet; }
 </style>

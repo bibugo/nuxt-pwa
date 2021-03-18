@@ -1,5 +1,5 @@
 <template>
-  <v-container pa-0 style="height: 100vh">
+  <v-container pa-0 style="height: 100%; overflow: hidden">
     <v-toolbar dark dense flat src="/images/vbanner.jpg">
       <v-btn icon @click.stop="propMiniVariant = !propMiniVariant">
         <v-icon
@@ -10,14 +10,22 @@
       <v-toolbar-title>Vuetify</v-toolbar-title>
       <template v-if="!propMiniVariant" v-slot:extension>
         <v-icon class="mr-2">mdi-account</v-icon>
-        <span class="subtitle-1" style="margin-bottom: -2px"> {{ $auth.user.fullname }} </span>
+        <span class="subtitle-1" style="margin-bottom: -2px">
+          {{ $auth.user.fullname }}
+        </span>
         <v-spacer />
         <v-btn icon @click.stop="logout">
           <v-icon>mdi-logout</v-icon>
         </v-btn>
       </template>
     </v-toolbar>
-    <v-list nav flat dense>
+    <v-list
+      nav
+      flat
+      dense
+      class="menu"
+      style="height: calc(100% - 96px); overflow-x: hidden; overflow-y: overlay"
+    >
       <v-list-item-group color="primary">
         <template v-for="(item, i) in items">
           <v-list-item
@@ -118,3 +126,13 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.menu {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.menu::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+</style>
