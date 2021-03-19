@@ -4,20 +4,16 @@
       <v-col
         class="main col-8 d-none d-lg-flex flex-column align-center justify-center primary"
       >
-        <div class="d-flex flex-column align-center">
-          <v-img class="logo mb-8" />
-          <p class="white--text font-weight-black display-2">
-            Project Management System
-          </p>
-        </div>
+        <v-img class="logo mb-8 flex-grow-0" />
+        <p class="white--text font-weight-black display-2">
+          Project Management System
+        </p>
       </v-col>
       <v-col class="login col-12 col-lg-4 d-flex flex-column">
         <v-spacer />
         <layout-login-card outlined width="360px" class="mx-auto" />
         <v-spacer />
-        <div class="text-center" style="width: 100%">
-          2021 — <strong>Geefire</strong>
-        </div>
+        <div class="text-center" style="width: 100%">2021 — Geefire</div>
       </v-col>
     </v-row>
   </v-container>

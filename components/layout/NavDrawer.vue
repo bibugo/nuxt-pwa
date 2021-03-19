@@ -15,7 +15,7 @@
         </span>
         <v-spacer />
         <v-btn icon @click.stop="logout">
-          <v-icon>mdi-logout</v-icon>
+          <v-icon size="22">mdi-logout</v-icon>
         </v-btn>
       </template>
     </v-toolbar>
@@ -113,7 +113,6 @@ export default {
         ],
       },
     ],
-    xxx: "mdi-close",
   }),
   methods: {
     logout() {
@@ -135,11 +134,11 @@ export default {
   background: transparent;
 }
 .menu::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.228);
   border-radius: 36px;
   border: none;
 }
 .menu::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.502);
 }
 </style>

@@ -16,6 +16,7 @@
     "nuxt": "^2.14.12"
   },
   "devDependencies": {
+    "@mdi/font": "^5.9.55",
     "@nuxtjs/vuetify": "^1.11.3",
     "cors": "^2.8.5",
     "express": "^4.17.1",

@@ -8,6 +8,9 @@
     <template v-slot:activator="{ on, attrs }">
       <v-btn icon v-bind="attrs" v-on="on">
         <v-icon>mdi-account</v-icon>
+        <!-- <v-avatar size="36">
+          <img :src="$auth.user.avatar" />
+        </v-avatar> -->
       </v-btn>
     </template>
     <v-card>
@@ -268,18 +271,22 @@ export default {
       }
     },
     async saveAvatar() {
-      const avatar = await this.$axios.post("/api/user/avatar", this.avatarData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const avatar = await this.$axios.post(
+        "/api/user/avatar",
+        this.avatarData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       if (!avatar) return;
       this.$message({
         content: "avatar uploaded!",
         color: "success",
       });
       this.avatar_saved = true;
-      this.$auth.user.avatar = avatar["data"];
+      this.$set(this.$auth.user, "avatar", avatar["data"]);
     },
     async saveProfile() {
       const user = await this.$axios.patch("/api/user", this.userData);

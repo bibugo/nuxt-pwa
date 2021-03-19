@@ -62,7 +62,7 @@ export default {
         .then((res) => {
           if (!res) {
             this.error = true;
-            this.error_message = "登录错误！";
+            this.error_message = "登录错误";
           } else {
             this.$router.push("/");
           }
