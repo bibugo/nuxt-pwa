@@ -1,16 +1,16 @@
 <template>
-    <v-row>
-      <v-col class="text-center">
-        <blockquote class="blockquote">
-          &#8220;{{ words }}&#8221;
-          <footer>
-            <small>
-              <em>&mdash;{{ author }}</em>
-            </small>
-          </footer>
-        </blockquote>
-      </v-col>
-    </v-row>
+  <v-row>
+    <v-col class="text-center">
+      <blockquote class="blockquote">
+        &#8220;{{ words }}&#8221;
+        <footer>
+          <small>
+            <em>&mdash;{{ author }}</em>
+          </small>
+        </footer>
+      </blockquote>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

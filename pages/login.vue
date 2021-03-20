@@ -13,7 +13,7 @@
         <v-spacer />
         <layout-login-card outlined width="360px" class="mx-auto" />
         <v-spacer />
-        <div class="text-center" style="width: 100%">2021 — Geefire</div>
+        <div class="primary--text text-center" style="width: 100%">2021 — Geefire</div>
       </v-col>
     </v-row>
   </v-container>

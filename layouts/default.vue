@@ -80,13 +80,6 @@ export default {
     task: false,
     messages: 5,
     title: "Vuetify.js",
-
-    alerts: [
-      { type: "success", message: `I'm a success alert.` },
-      { type: "info", message: `I'm an info alert.` },
-      { type: "warning", message: `I'm a warning alert.` },
-      { type: "error", message: `I'm an error alert.` },
-    ],
   }),
 };
 </script>

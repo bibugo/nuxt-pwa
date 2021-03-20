@@ -40,8 +40,7 @@ export default {
     this.$nuxt.$on("popup-dialog", (options, resolve, reject) => {
       this.resolve = resolve;
       this.reject = reject;
-      this.options = {};
-      Object.assign(this.options, this.defaults, options);
+      this.options = Object.assign({}, this.defaults, options);
       this.dialog = true;
     });
   },

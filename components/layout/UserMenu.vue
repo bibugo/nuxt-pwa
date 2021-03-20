@@ -78,7 +78,7 @@
           <v-container>
             <v-row class="fill-height">
               <v-col align-self="start" class="text-center">
-                <v-hover v-slot="{ hover }">
+                <!-- <v-hover v-slot="{ hover }">
                   <v-avatar
                     class="profile"
                     color="grey"
@@ -98,7 +98,26 @@
                       </div>
                     </v-img>
                   </v-avatar>
+                </v-hover> -->
+
+                <v-hover>
+                  <template v-slot:default="{ hover }">
+                    <v-avatar class="profile" color="grey" size="164" tile>
+                      <v-img
+                        :src="!!avatar_url ? avatar_url : $auth.user.avatar"
+                      >
+                      </v-img>
+                      <v-fade-transition>
+                        <v-overlay v-if="hover" absolute>
+                          <v-btn icon @click="launchAvatarPicker"
+                            ><v-icon>mdi-camera</v-icon></v-btn
+                          >
+                        </v-overlay>
+                      </v-fade-transition>
+                    </v-avatar>
+                  </template>
                 </v-hover>
+
                 <input
                   type="file"
                   ref="inputAvatar"
@@ -111,14 +130,12 @@
                 <v-btn
                   v-if="!avatar_saved"
                   small
-                  rounded
-                  elevation="0"
+                  depressed
                   color="blue-grey"
-                  class="ma-2 white--text"
+                  class="mt-2 white--text"
                   @click="saveAvatar"
                 >
-                  上传头像
-                  <v-icon right dark> mdi-cloud-upload </v-icon>
+                  保存头像
                 </v-btn>
               </v-col>
               <v-col cols="1" class="pa-0">
@@ -185,6 +202,15 @@ export default {
   mounted() {
     this.userData.phone = this.$auth.user.phone;
     this.userData.email = this.$auth.user.email;
+  },
+  watch: {
+    user_profile: function(val) {
+      if(val === false) {
+        this.avatar_url = ""
+        this.avatar_saved = true
+        this.$refs.inputAvatar.value = ''
+      }
+    },
   },
   computed: {
     do_not_disturb: {
@@ -280,18 +306,20 @@ export default {
           },
         }
       );
-      if (!avatar) return;
+      if (avatar.error) return;
       this.$message({
         content: "avatar uploaded!",
         color: "success",
       });
       this.avatar_saved = true;
-      this.$set(this.$auth.user, "avatar", avatar["data"]);
+      this.$auth.setUser(
+        Object.assign({}, this.$auth.user, { avatar: avatar.data })
+      );
     },
     async saveProfile() {
       const user = await this.$axios.patch("/api/user", this.userData);
-      if (!user) return;
-      this.$auth.setUser(user);
+      if (user.error) return;
+      this.$auth.setUser(user.data.user);
       this.$message({
         content: "save!",
         color: "success",

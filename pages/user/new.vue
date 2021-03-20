@@ -69,7 +69,7 @@ export default {
       if (!this.$refs.form.validate()) return;
       this.loading = true;
       this.$axios.post("/api/user/new", this.data).then((res) => {
-        if (!!res) {
+        if (!res.error) {
           this.$message({ content: "User created success", color: "success" });
           this.$refs.form.reset();
         }
@@ -81,6 +81,32 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation();
+    },
+  },
+  mounted() {
+    console.log(this.crumbs);
+  },
+  computed: {
+    crumbs() {
+      const fullPath = this.$route.fullPath;
+      const params = fullPath.startsWith("/")
+        ? fullPath.substring(1).split("/")
+        : fullPath.split("/");
+      const crumbs = [];
+      crumbs.push({ fullPath: "/", title: "首页" });
+      let path = "";
+      params.forEach((param, index) => {
+        path = `${path}/${param}`;
+        const match = this.$router.match(path);
+        if (match.name !== null) {
+          console.log(match.name);
+          crumbs.push({
+            title: param.replace(/-/g, " "),
+            ...match,
+          });
+        }
+      });
+      return crumbs;
     },
   },
 };

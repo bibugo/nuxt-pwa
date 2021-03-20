@@ -60,9 +60,9 @@ export default {
           data: this.login,
         })
         .then((res) => {
-          if (!res) {
+          if (res.error) {
             this.error = true;
-            this.error_message = "登录错误";
+            this.error_message = res.errors && res.errors.message || "登录错误";
           } else {
             this.$router.push("/");
           }

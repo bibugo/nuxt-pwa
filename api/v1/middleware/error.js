@@ -13,6 +13,7 @@ const errorHandler = function (err, req, res, next) {
             errors.push({ message: err.errors[key].message })
             return errors;
         }, [])
+        if (errors.length == 1) errors = errors[0]
     }
 
     errors = errors || {
