@@ -47,9 +47,9 @@
         </v-list-item>
         <v-list-item>
           <v-list-item-action>
-            <v-switch v-model="do_not_disturb" color="error"></v-switch>
+            <v-switch v-model="dark_theme"></v-switch>
           </v-list-item-action>
-          <v-list-item-title>Do Not Disturb</v-list-item-title>
+          <v-list-item-title>深色模式</v-list-item-title>
         </v-list-item>
       </v-list>
       <v-card-actions class="mx-4">
@@ -77,32 +77,10 @@
         <v-card-text>
           <v-container>
             <v-row class="fill-height">
-              <v-col align-self="start" class="text-center">
-                <!-- <v-hover v-slot="{ hover }">
-                  <v-avatar
-                    class="profile"
-                    color="grey"
-                    size="164"
-                    tile
-                    @click="launchAvatarPicker()"
-                    :class="{ 'on-hover': hover }"
-                  >
-                    <v-img :src="!!avatar_url ? avatar_url : $auth.user.avatar">
-                      <div
-                        v-if="hover"
-                        class="d-flex flex-grow-1 fill-height align-center justify-center"
-                      >
-                        <v-sheet rounded color="grey lighten-1" class="px-1"
-                          >点击选择头像</v-sheet
-                        >
-                      </div>
-                    </v-img>
-                  </v-avatar>
-                </v-hover> -->
-
+              <v-col align-self="start" class="d-flex flex-column align-center">
                 <v-hover>
                   <template v-slot:default="{ hover }">
-                    <v-avatar class="profile" color="grey" size="164" tile>
+                    <v-avatar color="grey" size="164" tile>
                       <v-img
                         :src="!!avatar_url ? avatar_url : $auth.user.avatar"
                       >
@@ -117,26 +95,22 @@
                     </v-avatar>
                   </template>
                 </v-hover>
-
+                <v-btn
+                  v-if="!avatar_saved"
+                  icon
+                  color="blue-grey"
+                  class="white--text"
+                  @click="saveAvatar"
+                >
+                  <v-icon>mdi-content-save</v-icon>
+                </v-btn>
                 <input
+                  hidden
                   type="file"
                   ref="inputAvatar"
                   name="avatar_file"
-                  @change="
-                    onAvatarChange($event.target.name, $event.target.files)
-                  "
-                  style="display: none"
+                  @change="onAvatarChange($event)"
                 />
-                <v-btn
-                  v-if="!avatar_saved"
-                  small
-                  depressed
-                  color="blue-grey"
-                  class="mt-2 white--text"
-                  @click="saveAvatar"
-                >
-                  保存头像
-                </v-btn>
               </v-col>
               <v-col cols="1" class="pa-0">
                 <v-divider vertical></v-divider>
@@ -165,16 +139,15 @@
                   label="确认密码"
                   type="password"
                 ></v-text-field>
-                <small>留空不修改密码</small>
               </v-col>
             </v-row>
           </v-container>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="saveProfile"> 保存 </v-btn>
-          <v-btn color="blue darken-1" text @click="user_profile = false">
-            关闭
+          <v-btn color="primary" text @click="saveProfile"> 保存 </v-btn>
+          <v-btn color="secondary" text @click="user_profile = false">
+            退出
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -189,7 +162,7 @@ export default {
     user_menu: false,
     user_profile: false,
     avatar_url: "",
-    max_size: 1024,
+    max_size: 100,
     avatar_saved: true,
     avatarData: null,
     userData: {
@@ -204,24 +177,25 @@ export default {
     this.userData.email = this.$auth.user.email;
   },
   watch: {
-    user_profile: function(val) {
-      if(val === false) {
-        this.avatar_url = ""
-        this.avatar_saved = true
-        this.$refs.inputAvatar.value = ''
+    user_profile: function (val) {
+      if (val === false) {
+        this.avatar_url = "";
+        this.avatar_saved = true;
+        this.$refs.inputAvatar.value = "";
       }
     },
   },
   computed: {
-    do_not_disturb: {
+    dark_theme: {
       get: function () {
-        return this.preferences.do_not_disturb;
+        return this.preferences.dark_theme;
       },
       set: function (val) {
         const obj = Object.assign({}, this.preferences, {
-          do_not_disturb: val,
+          dark_theme: val,
         });
         this.$emit("update:preferences", obj);
+        this.$vuetify.theme.dark = val;
       },
     },
     fav: {
@@ -272,10 +246,10 @@ export default {
     launchAvatarPicker() {
       this.$refs.inputAvatar.click();
     },
-    onAvatarChange(fieldName, file) {
+    onAvatarChange(e) {
       const { max_size } = this;
-      let imageFile = file[0];
-      if (file.length > 0) {
+      if (e.target.files.length > 0) {
+        let imageFile = e.target.files[0];
         let size = imageFile.size / max_size / 1024;
         if (!imageFile.type.match("image.*")) {
           this.$message({
@@ -291,7 +265,7 @@ export default {
           this.avatarData = new FormData();
           let imageURL = URL.createObjectURL(imageFile);
           this.avatar_url = imageURL;
-          this.avatarData.append(fieldName, imageFile);
+          this.avatarData.append(e.target.name, imageFile);
           this.avatar_saved = false;
         }
       }
@@ -335,9 +309,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.v-avatar.on-hover {
-  opacity: 0.6;
-}
-</style>

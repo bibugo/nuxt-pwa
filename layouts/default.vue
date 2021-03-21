@@ -22,7 +22,7 @@
       <v-toolbar-title v-text="title" />
       <v-spacer />
 
-      <layout-mail-menu :value="!preferences.do_not_disturb" />
+      <layout-mail-menu :value="false" />
 
       <layout-user-menu
         :drawer.sync="drawer"
@@ -50,9 +50,7 @@
     </v-app-bar>
 
     <v-main style="height: 100vh">
-      <v-container fluid fill-height align-start style="overflow-y: auto">
-        <nuxt />
-      </v-container>
+      <nuxt />
     </v-main>
 
     <layout-task-drawer v-model="task" />
@@ -75,7 +73,7 @@ export default {
     fixed: false,
     preferences: {
       fav: true,
-      do_not_disturb: true,
+      dark_theme: false,
     },
     task: false,
     messages: 5,

@@ -1,11 +1,13 @@
 <template>
-  <v-row>
-    <v-col cols="12">
-      <v-breadcrumbs large>
-        <h1 class="secondary--text">Dashboard</h1>
-      </v-breadcrumbs>
-    </v-col>
-  </v-row>
+  <container-fluid>
+    <v-row>
+      <v-col cols="12">
+        <v-breadcrumbs large>
+          <h1 class="secondary--text">Dashboard</h1>
+        </v-breadcrumbs>
+      </v-col>
+    </v-row>
+  </container-fluid>
 </template>
 
 <script>

@@ -69,7 +69,7 @@ router.post('/user/avatar', upload.single('avatar_file'), function (req, res, ne
         user.avatar.contentType = req.file.mimetype;
         user.save();
         fs.unlink(req.file.path, () => void 0)
-        return res.json(user.avatarBase64());
+        return res.send(user.avatarBase64());
     } catch (err) {
         next(err)
     }
