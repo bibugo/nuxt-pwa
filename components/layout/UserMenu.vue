@@ -2,7 +2,7 @@
   <v-menu
     v-model="user_menu"
     :close-on-content-click="false"
-    :nudge-width="200"
+    :nudge-width="260"
     offset-y
   >
     <template v-slot:activator="{ on, attrs }">
@@ -20,8 +20,8 @@
             <img :src="$auth.user.avatar" />
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title>John Leider</v-list-item-title>
-            <v-list-item-subtitle>Founder of Vuetify</v-list-item-subtitle>
+            <v-list-item-title>老嘢闲</v-list-item-title>
+            <v-list-item-subtitle>系统管理员</v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-action>
             <v-btn :class="fav ? 'red--text' : ''" icon @click="fav = !fav">
