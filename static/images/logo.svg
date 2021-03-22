@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="131px" height="106px" viewBox="0 0 131 106" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
-    <title>logo_white</title>
-    <desc>Created with Sketch.</desc>
-    <g id="logo_white" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="Group-39" transform="translate(12.000000, 16.000000)" stroke-width="16.3476923">
-            <path d="M4,72.4669231 L52.2318841,0" id="Line-10" stroke="#FFFFFF"></path>
-            <path d="M1.10416667,74.69 L105.551432,74.69" id="Line-10" stroke="#FBC02D"></path>
-            <path d="M52.2318841,0 L105.551432,74.69" id="Line-10" stroke="#FF5252"></path>
-        </g>
+<svg width="101px" height="118px" viewBox="0 0 101 118" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>LOGO-FIRE</title>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
+        <line x1="49.8685897" y1="68.1305732" x2="9.13141026" y2="108.869427" id="直线-4" stroke="#36A754" stroke-width="18"></line>
+        <line x1="50.133758" y1="68.1305732" x2="91.866242" y2="108.869427" id="直线-6" stroke="#4587F4" stroke-width="18"></line>
+        <line x1="50.5" y1="67.8665158" x2="50.5" y2="9.13348416" id="直线-7" stroke="#ED4436" stroke-width="18"></line>
+        <line x1="91.5" y1="26.133758" x2="91.5" y2="67.866242" id="直线-9" stroke="#C82320" stroke-width="18"></line>
+        <line x1="9.5" y1="26.133758" x2="9.5" y2="67.866242" id="直线-10" stroke="#FFBF02" stroke-width="18"></line>
     </g>
 </svg>
