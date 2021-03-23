@@ -77,6 +77,14 @@
             <v-list-item-title>帮助</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item exact router to="/help/1">
+          <v-list-item-icon>
+            <v-icon>mdi-help</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>帮助1</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list-item-group>
     </v-list>
   </v-container>
