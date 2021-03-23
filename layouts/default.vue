@@ -32,7 +32,7 @@
       />
 
       <v-badge
-        class="custom-badge"
+        class="custom-badge mr-n3"
         :content="messages"
         :value="messages"
         color="success"
