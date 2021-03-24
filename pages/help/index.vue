@@ -1,5 +1,5 @@
 <template>
-  <container-split-col>
+  <container-flex>
     <template v-slot:left-col>
 B<br />
     </template>
@@ -24,5 +24,5 @@ C<br />
       A <br />
       A <br />
 
-  </container-split-col>
+  </container-flex>
 </template>
