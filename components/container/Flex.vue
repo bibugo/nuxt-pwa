@@ -2,17 +2,25 @@
   <v-container
     fluid
     class="d-flex flex-column flex-grow-1"
-    :class="`pa-${pa || 4}`"
+    :class="`pa-${paddingContainer || 4}`"
     style="min-height: 100%; background-color: rgba(0, 0, 0, 0.08)"
+    :style="{
+      height: $vuetify.breakpoint.mdAndUp && autoOverflow ? '100%' : '',
+    }"
   >
-    <v-toolbar flat class="mb-2 transparent flex-grow-0" :hidden="false">
-      <v-divider class="ml-n4 mr-4" vertical></v-divider>
+    <v-toolbar
+      v-if="title || $slots['title-append']"
+      flat
+      dense
+      class="mb-3 transparent flex-grow-0"
+    >
+      <v-divider v-if="title" class="ml-n4 mr-4" vertical></v-divider>
       <div class="d-flex flex-column">
-        <v-toolbar-title>用户管理</v-toolbar-title>
-        <v-breadcrumbs class="pa-0" :items="items"></v-breadcrumbs>
+        <v-toolbar-title>{{ pageTitle }}</v-toolbar-title>
+        <v-breadcrumbs class="pa-0" :items="crumbs"></v-breadcrumbs>
       </div>
       <v-spacer></v-spacer>
-      <v-btn color="primary">Append</v-btn>
+      <slot name="title-append"></slot>
     </v-toolbar>
     <v-alert
       dismissible
@@ -21,15 +29,18 @@
       type="error"
       elevation="0"
       transition="scale-transition"
-      :value="true"
+      :value="false"
     >
       Fusce commodo aliquam arcu. Pellentesque posuere. Phasellus tempus. Donec
       posuere vulputate arcu.
     </v-alert>
     <v-row
       no-gutters
-      :class="{ 'flex-column': !$vuetify.breakpoint.mdAndUp }"
-      style="flex-wrap: nowrap;"
+      :class="[{ 'flex-column': !$vuetify.breakpoint.mdAndUp }]"
+      style="flex-wrap: nowrap"
+      :style="{
+        height: $vuetify.breakpoint.mdAndUp && autoOverflow ? '0' : '',
+      }"
     >
       <v-col
         v-if="$slots['left-col']"
@@ -45,9 +56,16 @@
               ($vuetify.breakpoint.mdAndUp && leftWidth && leftWidth + 'px') ||
               '',
           },
+          { height: $vuetify.breakpoint.mdAndUp && autoOverflow ? '100%' : '' },
+          {
+            overflow: $vuetify.breakpoint.mdAndUp && autoOverflow ? 'auto' : '',
+          },
         ]"
-        class="flex-grow-0 flex-shrink-0 white pa-2"
-        :class="{ 'rounded-lg': !dense }"
+        class="flex-grow-0 flex-shrink-1 col-background"
+        :class="[
+          paddingContent ? 'pa-' + paddingContent : 'pa-2',
+          { 'rounded-lg': !dense },
+        ]"
       >
         <slot name="left-col"> </slot>
       </v-col>
@@ -68,10 +86,20 @@
       />
       <v-col
         style="max-width: 100%"
-        class="white pa-2 flex-shrink-0"
+        :style="[
+          { height: $vuetify.breakpoint.mdAndUp && autoOverflow ? '100%' : '' },
+          {
+            overflow: $vuetify.breakpoint.mdAndUp && autoOverflow ? 'auto' : '',
+          },
+        ]"
+        class="flex-shrink-0 col-background"
         :class="[
+          paddingContent ? 'pa-' + paddingContent : 'pa-2',
           { 'rounded-lg': !dense },
-          $vuetify.breakpoint.mdAndUp ? 'flex-grow-1' : 'flex-grow-0',
+          $vuetify.breakpoint.mdAndUp ||
+          !($slots['left-col'] || $slots['right-col'])
+            ? 'flex-grow-1'
+            : 'flex-grow-0',
         ]"
       >
         <slot></slot>
@@ -109,9 +137,16 @@
                 rightWidth + 'px') ||
               '',
           },
+          { height: $vuetify.breakpoint.mdAndUp && autoOverflow ? '100%' : '' },
+          {
+            overflow: $vuetify.breakpoint.mdAndUp && autoOverflow ? 'auto' : '',
+          },
         ]"
-        class="flex-grow-0 flex-shrink-1 white pa-2"
-        :class="{ 'rounded-lg': !dense }"
+        class="flex-grow-0 flex-shrink-1 col-background"
+        :class="[
+          paddingContent ? 'pa-' + paddingContent : 'pa-2',
+          { 'rounded-lg': !dense },
+        ]"
       >
         <slot name="right-col"></slot>
       </v-col>
@@ -123,28 +158,48 @@
 export default {
   props: {
     dense: { type: Boolean },
-    pa: { type: String },
+    autoOverflow: { type: Boolean },
+    paddingContainer: { type: String },
+    paddingContent: { type: String },
     leftWidth: { type: String },
     rightWidth: { type: String },
+    title: { type: String },
+  },
+  computed: {
+    crumbs: function () {
+      if (!this.title) return [];
+      const titles = this.title.split(",");
+      this.pageTitle = titles[titles.length - 1];
+      const crumbs = [];
+      if (titles.length > 1) {
+        let path = "";
+        this.$route.fullPath.split("/").forEach((name, i) => {
+          if (i > 0) {
+            path += "/" + name;
+            if (i <= titles.length && titles[i - 1]) {
+              crumbs.push({
+                text: titles[i - 1],
+                href: path,
+                disabled: this.$route.fullPath === path ? true : false,
+              });
+            }
+          }
+        });
+      }
+      return crumbs;
+    },
   },
   data: () => ({
-    items: [
-      {
-        text: "Dashboard",
-        disabled: false,
-        href: "breadcrumbs_dashboard",
-      },
-      {
-        text: "Link 1",
-        disabled: false,
-        href: "breadcrumbs_link_1",
-      },
-      {
-        text: "Link 2",
-        disabled: true,
-        href: "breadcrumbs_link_2",
-      },
-    ],
+    pageTitle: "",
   }),
 };
 </script>
+
+<style scoped>
+.theme--dark .col-background {
+  background-color: var(--v-background-base, #212121) !important;
+}
+.theme--light .col-background {
+  background-color: var(--v-background-base, white) !important;
+}
+</style>

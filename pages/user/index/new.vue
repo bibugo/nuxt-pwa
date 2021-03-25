@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-layout column>
-      <v-form ref="form" v-model="valid" @submit.prevent="submit" class="px-10">
+      <v-form ref="form" v-model="valid" @submit.prevent="submit">
         <v-text-field
           v-model="data.username"
           :counter="10"

@@ -49,7 +49,7 @@
       </template>
     </v-app-bar>
 
-    <v-main style="height: 100vh">
+    <v-main style="height: 100%">
       <nuxt />
     </v-main>
 

@@ -67,7 +67,7 @@
             </v-list-item>
           </v-list-group>
         </template>
-        <v-subheader inset> 其他 </v-subheader>
+        <!-- <v-subheader inset></v-subheader> -->
         <v-divider class="ml-16"></v-divider>
         <v-list-item exact router to="/help">
           <v-list-item-icon>
@@ -75,14 +75,6 @@
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>帮助</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item exact router to="/help/1">
-          <v-list-item-icon>
-            <v-icon>mdi-help</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>帮助1</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
