@@ -52,6 +52,7 @@ export default {
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
     '@nuxtjs/auth-next',
+    '@nuxt/content',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -122,6 +123,10 @@ export default {
       //   }
       // }
     }
+  },
+
+  content: {
+    // Options
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
