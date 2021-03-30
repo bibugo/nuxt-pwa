@@ -20,8 +20,11 @@
         <v-breadcrumbs class="pa-0" :items="crumbs"></v-breadcrumbs>
       </div>
       <v-spacer></v-spacer>
-      <slot name="title-append"></slot>
+      <slot name="append-title"></slot>
     </v-toolbar>
+    <v-sheet v-if="$slots['append-head']" class="flex-grow-0">
+      <slot name="append-head"></slot>
+    </v-sheet>
     <v-alert
       dismissible
       border="right"
@@ -76,7 +79,7 @@
           { border: !dense ? 'none' : '' },
           {
             'margin-right':
-              ($vuetify.breakpoint.mdAndUp && (dense ? '1px' : '16px')) || '',
+              ($vuetify.breakpoint.mdAndUp && (dense ? '0' : '16px')) || '',
           },
           {
             'margin-bottom':
@@ -197,7 +200,7 @@ export default {
 
 <style scoped>
 .theme--dark .col-background {
-  background-color: var(--v-background-base, #212121) !important;
+  background-color: var(--v-background-base, #1e1e1e) !important;
 }
 .theme--light .col-background {
   background-color: var(--v-background-base, white) !important;

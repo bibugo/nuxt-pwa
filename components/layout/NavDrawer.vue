@@ -103,6 +103,11 @@ export default {
         to: "/",
       },
       {
+        action: "mdi-email",
+        title: "邮件",
+        to: "/mail",
+      },
+      {
         action: "mdi-school",
         title: "Education",
         active: true,
