@@ -12,9 +12,9 @@
       v-if="title || $slots['title-append']"
       flat
       dense
-      class="mb-3 transparent flex-grow-0"
+      :class="[{'mb-3': crumbs && crumbs.length > 0},'transparent', 'flex-grow-0']"
     >
-      <v-divider v-if="title" class="ml-n4 mr-4" vertical></v-divider>
+      <v-divider v-if="title && crumbs && crumbs.length > 0" class="ml-n4 mr-4" vertical></v-divider>
       <div class="d-flex flex-column">
         <v-toolbar-title>{{ pageTitle }}</v-toolbar-title>
         <v-breadcrumbs class="pa-0" :items="crumbs"></v-breadcrumbs>
