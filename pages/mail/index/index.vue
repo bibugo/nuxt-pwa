@@ -1,6 +1,6 @@
 <template>
   <v-data-table
-    v-model="selected"
+    v-model="tableSelected"
     :headers="headers"
     :items="desserts"
     item-key="id"
@@ -8,6 +8,7 @@
     hide-default-header
     class="elevation-0 row-pointer fix-hidden-header"
     @click:row="view"
+    @input="$emit('input', tableSelected)"
   >
     <template v-slot:[`item.starred`]="{ item }">
       <v-btn :class="{ 'orange--text text--lighten-2': item.starred }" icon>
@@ -21,77 +22,84 @@
 
 <script>
 export default {
-  data: () => ({
-    selected: [],
-    headers: [
-      { value: "starred", sortable: false, width: "36px" },
-      {
-        align: "start",
-        value: "sender",
-      },
-      { value: "title" },
-      { value: "date" },
-    ],
-    desserts: [
-      {
-        starred: true,
-        sender: "欧康江伟熙",
-        title: "关于2021年清明节放假的通知",
-        date: "3月23日",
-        id: "123456780",
-      },
-      {
-        sender: "中国移动139邮箱",
-        title: "139邮箱2月数据账单",
-        date: "3月23日",
-        id: "123456781",
-       },
-      {
-        starred: true,
-        sender: "何文彬",
-        title: "2021年车辆信息收集_技术发展部",
-        date: "3月28日",
-        id: "123456782",
-       },
-      {
-        sender: "Sonetel",
-        title: "Save 30% on your next purchase",
-        date: "3月28日",
-        id: "123456783",
-       },
-      {
-        sender: "Sonetel",
-        title: "Save 30% on your next purchase",
-        date: "3月28日",
-        id: "123456784",
-      },
-      {
-        sender: "Sonetel",
-        title: "Save 30% on your next purchase",
-        date: "3月28日",
-        id: "123456785",
-       },
-      {
-        sender: "Sonetel",
-        title: "Save 30% on your next purchase",
-        date: "3月28日",
-        id: "123456786",
-      },
-      {
-        sender: "Sonetel",
-        title: "Save 30% on your next purchase",
-        date: "3月28日",
-        id: "123456787",
-       },
-    ],
-  }),
+  props: ["value", "selectAll"],
+  data: function () {
+    return {
+      tableSelected: this.value,
+      headers: [
+        { value: "starred", sortable: false, width: "36px" },
+        {
+          align: "start",
+          value: "sender",
+        },
+        { value: "title" },
+        { value: "date" },
+      ],
+      desserts: [
+        {
+          starred: true,
+          sender: "欧康江伟熙",
+          title: "关于2021年清明节放假的通知",
+          date: "3月23日",
+          id: "123456780",
+        },
+        {
+          sender: "中国移动139邮箱",
+          title: "139邮箱2月数据账单",
+          date: "3月23日",
+          id: "123456781",
+        },
+        {
+          starred: true,
+          sender: "何文彬",
+          title: "2021年车辆信息收集_技术发展部",
+          date: "3月28日",
+          id: "123456782",
+        },
+        {
+          sender: "Sonetel",
+          title: "Save 30% on your next purchase",
+          date: "3月28日",
+          id: "123456783",
+        },
+        {
+          sender: "Sonetel",
+          title: "Save 30% on your next purchase",
+          date: "3月28日",
+          id: "123456784",
+        },
+        {
+          sender: "Sonetel",
+          title: "Save 30% on your next purchase",
+          date: "3月28日",
+          id: "123456785",
+        },
+        {
+          sender: "Sonetel",
+          title: "Save 30% on your next purchase",
+          date: "3月28日",
+          id: "123456786",
+        },
+        {
+          sender: "Sonetel",
+          title: "Save 30% on your next purchase",
+          date: "3月28日",
+          id: "123456787",
+        },
+      ],
+    };
+  },
   watch: {
-    selected: function (val) {
-      console.log(val);
+    selectAll: function (val) {
+      if (val) {
+        this.tableSelected = this.desserts;
+      } else {
+        this.tableSelected = [];
+      }
     },
   },
   methods: {
-    view: function (item, opts) {
+    view: function (item) {
       this.$router.push("/mail/view/" + item.id);
     },
   },

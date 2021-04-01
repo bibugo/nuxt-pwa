@@ -11,8 +11,9 @@
         <v-col style="min-width: 256px" class="flex-grow-0"> </v-col>
         <v-col>
           <v-toolbar dense flat>
-            <div class="d-flex ml-n3" v-if="action == 'list'">
+            <div class="d-flex ml-n3">
               <v-select
+                v-if="action == 'list'"
                 :items="['全部', '无', '已读', '未读', '已加星标', '未加星标']"
                 solo
                 dense
@@ -25,20 +26,33 @@
                   <v-checkbox
                     v-model="selectAll"
                     hide-details
-                    @click.stop="clickSelectAll"
+                    @click.stop=""
                   ></v-checkbox>
                 </template>
                 <template v-slot:selection> </template>
               </v-select>
+            </div>
+            <v-toolbar-items
+              class="ml-n3"
+              v-if="action == 'list' && selected.length == 0"
+            >
               <v-btn icon>
                 <v-icon>mdi-refresh</v-icon>
               </v-btn>
               <v-btn icon>
                 <v-icon>mdi-dots-vertical</v-icon>
               </v-btn>
-            </div>
-            <v-toolbar-items class="ml-n4" v-if="action == 'view'">
-              <v-btn icon class="mr-4" @click="$router.go(-1)">
+            </v-toolbar-items>
+            <v-toolbar-items
+              class="ml-n3"
+              v-if="action == 'view' || selected.length > 0"
+            >
+              <v-btn
+                v-if="action == 'view'"
+                icon
+                class="mr-8 ml-2"
+                @click="$router.back()"
+              >
                 <v-icon>mdi-arrow-left</v-icon>
               </v-btn>
               <v-btn icon>
@@ -76,7 +90,7 @@
         no-click-animation
         transition="dialog-bottom-transition"
         width="700"
-        content-class="bottom-dialog mr-0 ml-auto"
+        content-class="bottom-dialog mb-0 ml-auto"
       >
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -158,7 +172,7 @@
       </v-dialog>
 
       <v-list dense shaped>
-        <v-list-item-group v-model="selectedItem" color="primary">
+        <v-list-item-group color="primary">
           <v-list-item exact to="/mail">
             <v-list-item-icon>
               <v-icon>mdi-inbox</v-icon>
@@ -193,7 +207,7 @@
           </v-list-item>
           <v-subheader>标签</v-subheader>
           <v-list-item
-            v-for="(item, i) in items"
+            v-for="(item, i) in tags"
             :key="i"
             exact
             :to="`/mail/#tag/${item.name}`"
@@ -208,7 +222,10 @@
         </v-list-item-group>
       </v-list>
     </template>
-    <nuxt-child />
+    <nuxt-child
+      v-model="selected"
+      :select-all="selectAll"
+    />
   </container-flex>
 </template>
 
@@ -217,18 +234,14 @@ export default {
   data: () => ({
     action: "",
     selectAll: false,
-    selectedItem: 0,
-    items: [
+    selected: [],
+    tags: [
       { name: "重要", icon: "mdi-bookmark-outline" },
       { name: "动态", icon: "mdi-information-outline" },
       { name: "待办", icon: "mdi-clock-time-four-outline" },
     ],
   }),
-  methods: {
-    clickSelectAll: function () {
-      console.log(this.selectAll);
-    },
-  },
+  methods: {},
   watch: {
     $route: {
       immediate: true,
