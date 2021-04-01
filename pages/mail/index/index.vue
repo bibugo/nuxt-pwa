@@ -11,7 +11,7 @@
     @input="$emit('input', tableSelected)"
   >
     <template v-slot:[`item.starred`]="{ item }">
-      <v-btn :class="{ 'orange--text text--lighten-2': item.starred }" icon>
+      <v-btn :class="{ 'orange--text text--lighten-2': item.starred }" icon @click.stop>
         <v-icon
           v-text="item.starred ? 'mdi-star' : 'mdi-star-outline'"
         ></v-icon>

@@ -10,7 +10,7 @@
       <v-row no-gutters>
         <v-col style="min-width: 256px" class="flex-grow-0"> </v-col>
         <v-col>
-          <v-toolbar dense flat>
+          <v-toolbar dense flat class="toolbar">
             <div class="d-flex ml-n3">
               <v-select
                 v-if="action == 'list'"
@@ -222,10 +222,7 @@
         </v-list-item-group>
       </v-list>
     </template>
-    <nuxt-child
-      v-model="selected"
-      :select-all="selectAll"
-    />
+    <nuxt-child v-model="selected" :select-all="selectAll" />
   </container-flex>
 </template>
 
@@ -261,5 +258,8 @@ export default {
 <style scoped>
 * >>> .bottom-dialog {
   align-self: flex-end;
+}
+* >>> .toolbar .v-input__control > .v-input__slot {
+  background: transparent !important;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <container-flex padding-container="0" dense>
+  <container-flex dense>
 
   </container-flex>
 </template>

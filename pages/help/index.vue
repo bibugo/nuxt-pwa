@@ -1,7 +1,9 @@
 <template>
   <container-with-sidebar right>
     <template v-slot:sidebar-prepend>
-      <v-sheet class="mt-4 mb-2"><h4>目 录</h4></v-sheet>
+      <v-sheet class="mt-4 mb-2" style="background: transparent"
+        ><h4>目 录</h4></v-sheet
+      >
     </template>
     <template v-slot:sidebar>
       <v-row no-gutters
