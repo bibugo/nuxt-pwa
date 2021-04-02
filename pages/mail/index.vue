@@ -25,6 +25,7 @@
                 <template v-slot:prepend-inner>
                   <v-checkbox
                     v-model="selectAll"
+                    :indeterminate="selectIndeterminate"
                     hide-details
                     @click.stop=""
                   ></v-checkbox>
@@ -222,7 +223,11 @@
         </v-list-item-group>
       </v-list>
     </template>
-    <nuxt-child v-model="selected" :select-all="selectAll" />
+    <nuxt-child
+      v-model="selected"
+      :select-all="selectAll"
+      @select-change="selectChange"
+    />
   </container-flex>
 </template>
 
@@ -231,6 +236,7 @@ export default {
   data: () => ({
     action: "",
     selectAll: false,
+    selectIndeterminate: false,
     selected: [],
     tags: [
       { name: "重要", icon: "mdi-bookmark-outline" },
@@ -238,7 +244,19 @@ export default {
       { name: "待办", icon: "mdi-clock-time-four-outline" },
     ],
   }),
-  methods: {},
+  methods: {
+    selectChange({ count, total }) {
+      if (count != 0 && count != total) {
+        this.selectIndeterminate = true;
+      } else if (count == total) {
+        this.selectAll = true;
+        this.selectIndeterminate = false;
+      } else if (count == 0) {
+        this.selectAll = false;
+        this.selectIndeterminate = false;
+      }
+    },
+  },
   watch: {
     $route: {
       immediate: true,

@@ -8,10 +8,20 @@
     hide-default-header
     class="elevation-0 row-pointer fix-hidden-header"
     @click:row="view"
-    @input="$emit('input', tableSelected)"
+    @input="
+      $emit('input', tableSelected);
+      $emit('select-change', {
+        count: tableSelected.length,
+        total: desserts.length,
+      });
+    "
   >
     <template v-slot:[`item.starred`]="{ item }">
-      <v-btn :class="{ 'orange--text text--lighten-2': item.starred }" icon @click.stop>
+      <v-btn
+        :class="{ 'orange--text text--lighten-2': item.starred }"
+        icon
+        @click.stop
+      >
         <v-icon
           v-text="item.starred ? 'mdi-star' : 'mdi-star-outline'"
         ></v-icon>
@@ -92,9 +102,10 @@ export default {
   watch: {
     selectAll: function (val) {
       if (val) {
-        this.tableSelected = this.desserts;
+        if (this.tableSelected.length != this.desserts.length)
+          this.tableSelected = this.desserts;
       } else {
-        this.tableSelected = [];
+        if (this.tableSelected.length != 0) this.tableSelected = [];
       }
     },
   },

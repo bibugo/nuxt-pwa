@@ -1,5 +1,5 @@
 <template>
-  <container-flex title="用户管理,新建用户" left-width="500">
+  <container-flex title="用户管理,新建用户" left-width="400">
     <template v-slot:left-col>
         <nuxt-child />
     </template>
