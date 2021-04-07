@@ -3,11 +3,62 @@
 // The variables you want to modify
 // $font-size-root: 20px;
 
+$body-font-family: "Roboto", "Noto Sans SC", sans-serif;
+
 html {
-    overflow-y: auto;
+  overflow-y: auto;
 }
 
-$body-font-family: "Roboto", "Noto Sans SC", sans-serif;
+.mini-scrollbar {
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &.bg-transparent::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-track {
+    background: #fafafa;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.228);
+    border-radius: 36px;
+    border: none;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.502);
+  }
+}
+
+.cursor-hand:hover {
+  cursor: pointer;
+}
+
+.reveal {
+  position: relative;
+  &__layer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background-color: transparent;
+    width: 100%;
+  }
+}
+
+.inline-text-field {
+  & > .v-input__control {
+    min-height: auto !important;
+    & > .v-input__slot {
+      input {
+        padding: 0 !important;
+      }
+    }
+  }
+  &.pa-0 {
+    .v-input__slot {
+      padding: 0 !important;
+    }
+  }
+}
 
 $badge-font-size: 9px;
 $badge-padding: 2px 3px;

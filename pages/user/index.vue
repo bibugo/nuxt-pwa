@@ -1,7 +1,21 @@
 <template>
-  <container-flex title="用户管理,新建用户" left-width="400">
+  <container-flex title="用户管理,新建用户" left-width="376">
     <template v-slot:left-col>
-        <nuxt-child />
+      <v-tabs grow class="mb-2">
+        <v-tab class="primary--text" exact to="/user">
+          <v-icon>mdi-account-search-outline</v-icon>
+        </v-tab>
+        <v-tab class="primary--text" exact to="/user/organization">
+          <v-icon>mdi-sitemap</v-icon>
+        </v-tab>
+        <v-tab class="primary--text" exact to="/user/position">
+          <v-icon>mdi-badge-account-horizontal-outline</v-icon>
+        </v-tab>
+        <v-tab class="primary--text" exact to="/user/group">
+          <v-icon>mdi-account-group-outline</v-icon>
+        </v-tab>
+      </v-tabs>
+      <nuxt-child />
     </template>
     <template v-slot:append-title>
       <v-dialog v-model="dialog" max-width="500px">

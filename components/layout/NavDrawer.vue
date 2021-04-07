@@ -118,13 +118,11 @@ export default {
         ],
       },
       {
-        action: "mdi-run",
-        title: "User",
+        action: "mdi-cog",
+        title: "系统管理",
         active: true,
         children: [
-          { title: "User", to: "/user" },
-          { title: "New", to: "/user/new" },
-          { title: "Inspire", to: "/inspire" },
+          { title: "用户管理", to: "/user" },
         ],
       },
     ],
