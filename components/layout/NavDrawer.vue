@@ -29,7 +29,7 @@
       <v-list-item-group color="primary">
         <template v-for="(item, i) in items">
           <v-list-item
-            exact
+            :exact="!item.inexact"
             v-if="!item.children || item.children.length < 1"
             :key="i"
             :to="item.to"
@@ -56,7 +56,7 @@
               </v-list-item-content>
             </template>
             <v-list-item
-              exact
+              :exact="!sub.inexact"
               v-for="(sub, j) in item.children"
               :to="sub.to"
               :key="j"
@@ -106,6 +106,7 @@ export default {
         action: "mdi-email",
         title: "邮件",
         to: "/mail",
+        inexact: true,
       },
       {
         action: "mdi-school",
@@ -121,9 +122,7 @@ export default {
         action: "mdi-cog",
         title: "系统管理",
         active: true,
-        children: [
-          { title: "用户管理", to: "/user" },
-        ],
+        children: [{ title: "用户管理", to: "/user", inexact: true }],
       },
     ],
   }),
