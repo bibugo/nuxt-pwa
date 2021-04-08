@@ -34,8 +34,9 @@
     <v-treeview
       :items="items"
       :search="search"
+      :open.sync="openItems"
       dense
-      hoverable
+      :hoverable="!editingItem"
       open-all
       expand-icon="mdi-chevron-down"
       return-object
@@ -50,16 +51,25 @@
           >
             {{ item.name }}
             <div
-              v-if="editable && hover"
+              v-if="editable && hover && !editingItem"
               class="reveal__layer d-flex align-center justify-end"
             >
               <v-btn icon x-small class="mr-2" @click.stop="addItem(item)"
                 ><v-icon>mdi-plus-outline</v-icon></v-btn
               >
-              <v-btn icon x-small class="mr-2" @click.stop="editItem(item)"
+              <v-btn
+                icon
+                x-small
+                :class="item.id != fixedId ? 'mr-2' : 'mr-8'"
+                @click.stop="editItem(item)"
                 ><v-icon>mdi-pencil-outline</v-icon></v-btn
               >
-              <v-btn icon x-small class="mr-1" @click.stop="removeItem(item)"
+              <v-btn
+                v-if="item.id != fixedId"
+                icon
+                x-small
+                class="mr-1"
+                @click.stop="removeItem(item)"
                 ><v-icon>mdi-trash-can-outline</v-icon></v-btn
               >
             </div>
@@ -92,7 +102,7 @@
                     x-small
                     class="mr-1"
                     color="success"
-                    @click.stop="save"
+                    @click.stop="save(item)"
                     ><v-icon>mdi-check-bold</v-icon></v-btn
                   >
                 </template>
@@ -113,16 +123,15 @@ export default {
     height: String,
     uneditable: Boolean,
     filterable: Boolean,
+    fixedId: String
   },
   data: () => ({
     editingItem: null,
     search: undefined,
     editable: false,
+    openItems: [],
   }),
   computed: {
-    filter() {
-      return (item, search, textKey) => item[textKey].indexOf(search) > -1;
-    },
     items: {
       get() {
         return this.value;
@@ -134,27 +143,45 @@ export default {
   },
   methods: {
     addItem(item) {
-      if (!item.children) item["children"] = [];
-      item.children.push({})
-      //   this.items.splice(index, 0, {});
-      //   this.editingNew = true;
-      //   this.editingItem = {};
-      //   this.editingIndex = index;
+      if (!item.children) {
+        this.$set(item, "children", []);
+      }
+      const length = item.children.push({ id: "_new_", name: "" });
+      this.editingItem = Object.assign({}, item.children[length - 1]);
+      this.openItems.push(item);
     },
     editItem(item) {
       this.editingItem = Object.assign({}, item);
     },
-    removeItem(item) {
-      //   this.items.splice(index, 1);
+    removeItem(item, isnew) {
+      let removed = false;
+      this.items.splice(
+        0,
+        this.items.length,
+        ...(function recurse(items) {
+          return items.filter((el) => {
+            if (item.id == el.id) {
+              removed = true;
+              return false;
+            } else if (el.children) el.children = recurse(el.children);
+            return true;
+          });
+        })(this.items)
+      );
+      if (removed && !isnew) this.$emit("remove", item);
     },
-    save() {
+    save(item) {
+      if (!!this.editingItem.name.trim() && item.name != this.editingItem.name){
+        item.name = this.editingItem.name;
+        this.$emit("save", this.editingItem);
+      } else if (this.editingItem.id == '_new_') {
+        this.removeItem(this.editingItem, true);
+      }
       this.editingItem = null;
     },
     cancel() {
+      if (this.editingItem.id == '_new_') this.removeItem(this.editingItem, true);
       this.editingItem = null;
-    },
-    itemselect() {
-      console.log("select");
     },
   },
 };
